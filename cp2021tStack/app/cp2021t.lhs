@@ -127,15 +127,13 @@
 
 \begin{center}\large
 \begin{tabular}{ll}
-\textbf{Grupo} nr. & 999 (preencher)
+\textbf{Grupo} nr. & 111
 \\\hline
-a11111 & Nome1 (preencher)
+a93166 & João Carvalho
 \\
-a22222 & Nome2 (preencher)
+a93202 & Francisco Neves
 \\
-a33333 & Nome3 (preencher)
-\\
-a44444 & Nome4 (preencher, se aplicável, ou apagar)
+a93310 & Joaquim Roque
 \end{tabular}
 \end{center}
 
@@ -702,7 +700,7 @@ Verifique as suas funções testando a propriedade seguinte:
 A média de uma lista não vazia e de uma \LTree\ com os mesmos elementos coincide,
 a menos de um erro de 0.1 milésimas:
 \begin{code}
-prop_avg :: Ord a => [a] -> Property
+prop_avg :: [Double] -> Property
 prop_avg = nonempty .==>. diff .<=. const 0.000001 where
    diff l = avg l - (avgLTree . genLTree) l
    genLTree = anaLTree lsplit
@@ -1077,12 +1075,24 @@ avg = p1.avg_aux
 \end{code}
 
 \begin{code}
-avg_aux = undefined
+inNL = either singl cons
+outNL[a] = i1(a)
+outNL(a:x) = i2(a,x)  
+cataNL g = g . recList(cataNL g) . outNL
+avg_aux = cataNL(either f g)
+  where f = split id (const 1)
+        g = split av len
+        av(a,(b, c)) = (a + c * b) / (c + 1)
+        len(a, (b, c)) = c + 1
 \end{code}
 Solução para árvores de tipo \LTree:
 \begin{code}
 avgLTree = p1.cataLTree gene where
-   gene = undefined
+   gene = either f g
+    where f = split id (const 1)
+          g = split av len
+          av((a, b), (c, d)) = (a * b + c * d) / (b + d)
+          len((a, b), (c, d)) = b + d
 \end{code}
 
 \subsection*{Problema 5}
