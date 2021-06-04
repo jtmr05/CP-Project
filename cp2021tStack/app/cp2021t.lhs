@@ -1037,12 +1037,13 @@ sd_gen = undefined
 ad_gen = undefined
 \end{code}
 
+--Problema 2
 \subsection*{Problema 2}
 Definir
 \begin{code}
-loop = undefined
-inic = undefined
-prj = undefined
+loop (a, b, c) = (quot (a*b) c, b+4, c+1)  
+inic = (1, 2, 2)
+prj (a, b, c) = a
 \end{code}
 por forma a que
 \begin{code}
@@ -1050,7 +1051,46 @@ cat = prj . (for loop inic)
 \end{code}
 seja a função pretendida.
 \textbf{NB}: usar divisão inteira.
-Apresentar de seguida a justificação da solução encontrada.
+Apresentar de seguida a justificação da solução encontrada. 
+\\ \\
+Definição do número $n$ de Catalan:
+\begin{eqnarray*}
+    catal(n) = \frac{(2n)!}{(n+1)! (n!) }
+\end{eqnarray*}
+Temos de imediato que $catal(0) = 1$. Devemos agora calcular $catal(n)$ como uma recursão, para podermos aplicar a \emph{regra de algibeira} fornecida. Calculemos, então:
+\begin{quote}
+    $\frac{catal(n+1)}{catal(n)} 
+    =
+    \frac{\frac{(2(n+1))!}{((n+1)+1)! (n+1)!}} {\frac{(2n)!}{(n+1)! (n!) }}
+    =
+    \frac{(2n+2)!(n!)}{(n+2)!(2n)!}
+    =
+    \frac{(2n+2)(2n+1)(2n)!(n!)}{(n+2)(n+1)(n!)(2n)!}
+    =
+    \frac{2(n+1)(2n+1)}{(n+2)(n+1)}
+    = 
+    \frac{4n+2}{n+2}$
+\end{quote}
+Logo
+\begin{eqnarray*}
+    catal(n+1) = \frac{4n+2}{n+2} catal(n)
+\end{eqnarray*}
+Temos, então, a função auxiliar $c(n) = \frac{4n+2}{n+2}$. Podemos decompor $c$ em duas funções, $c1$ e $c2$, tais que: $c1(n) = 4n+2$ e $c2(n) = n+2$. Assim decomposta, é muito simples exprimir $c1$ e $c2$ à custa de si mesmas. Daqui, temos $c1(0) = c2(0) = 2$, $c1(n+1) = 4+c1(n)$ e $c2(n+1) = 1+c2(n)$.
+
+\begin{spec}
+catal 0 = 1
+catal (n+1) = c1(n) catal(n) / c2(n)
+
+
+c1 0 = 2
+c1 (n+1) = 4+c1(n)
+
+
+c2 0 = 2
+c2(n+1) = 1+c2(n)
+\end{spec}
+Assim, estamos em condições de aplicar a \emph{regra}, onde $inic = (1, \ \ 2, \ \ 2)$ e $loop (catal, \ c1, \ c2) = (quot \ (catal \cdot c1) \ \ c2, \ 4+c1, \ 1+c2)$.
+
 
 \subsection*{Problema 3}
 

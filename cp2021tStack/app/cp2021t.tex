@@ -1596,16 +1596,17 @@ Definir:
 \ColumnHook
 \end{hscode}\resethooks
 
+--Problema 2
 \subsection*{Problema 2}
 Definir
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{loop}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{loop}\;(\Varid{a},\Varid{b},\Varid{c})\mathrel{=}(\Varid{quot}\;(\Varid{a}\mathbin{*}\Varid{b})\;\Varid{c},\Varid{b}\mathbin{+}\mathrm{4},\Varid{c}\mathbin{+}\mathrm{1}){}\<[E]%
 \\
-\>[B]{}\Varid{inic}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{inic}\mathrel{=}(\mathrm{1},\mathrm{2},\mathrm{2}){}\<[E]%
 \\
-\>[B]{}\Varid{prj}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{prj}\;(\Varid{a},\Varid{b},\Varid{c})\mathrel{=}\Varid{a}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 por forma a que
@@ -1617,7 +1618,50 @@ por forma a que
 \end{hscode}\resethooks
 seja a função pretendida.
 \textbf{NB}: usar divisão inteira.
-Apresentar de seguida a justificação da solução encontrada.
+Apresentar de seguida a justificação da solução encontrada. 
+\\ \\
+Definição do número $n$ de Catalan:
+\begin{eqnarray*}
+    catal(n) = \frac{(2n)!}{(n+1)! (n!) }
+\end{eqnarray*}
+Temos de imediato que $catal(0) = 1$. Devemos agora calcular $catal(n)$ como uma recursão, para podermos aplicar a \emph{regra de algibeira} fornecida. Calculemos, então:
+\begin{quote}
+    $\frac{catal(n+1)}{catal(n)} 
+    =
+    \frac{\frac{(2(n+1))!}{((n+1)+1)! (n+1)!}} {\frac{(2n)!}{(n+1)! (n!) }}
+    =
+    \frac{(2n+2)!(n!)}{(n+2)!(2n)!}
+    =
+    \frac{(2n+2)(2n+1)(2n)!(n!)}{(n+2)(n+1)(n!)(2n)!}
+    =
+    \frac{2(n+1)(2n+1)}{(n+2)(n+1)}
+    = 
+    \frac{4n+2}{n+2}$
+\end{quote}
+Logo
+\begin{eqnarray*}
+    catal(n+1) = \frac{4n+2}{n+2} catal(n)
+\end{eqnarray*}
+Temos, então, a função auxiliar $c(n) = \frac{4n+2}{n+2}$. Podemos decompor $c$ em duas funções, $c1$ e $c2$, tais que: $c1(n) = 4n+2$ e $c2(n) = n+2$. Assim decomposta, é muito simples exprimir $c1$ e $c2$ à custa de si mesmas. Daqui, temos $c1(0) = c2(0) = 2$, $c1(n+1) = 4+c1(n)$ e $c2(n+1) = 1+c2(n)$.
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{catal}\;\mathrm{0}\mathrel{=}\mathrm{1}{}\<[E]%
+\\
+\>[B]{}\Varid{catal}\;(\Varid{n}\mathbin{+}\mathrm{1})\mathrel{=}\Varid{c1}\;(\Varid{n})\;\Varid{catal}\;(\Varid{n})\mathbin{/}\Varid{c2}\;(\Varid{n}){}\<[E]%
+\\[\blanklineskip]%
+\>[B]{}\Varid{c1}\;\mathrm{0}\mathrel{=}\mathrm{2}{}\<[E]%
+\\
+\>[B]{}\Varid{c1}\;(\Varid{n}\mathbin{+}\mathrm{1})\mathrel{=}\mathrm{4}\mathbin{+}\Varid{c1}\;(\Varid{n}){}\<[E]%
+\\[\blanklineskip]%
+\>[B]{}\Varid{c2}\;\mathrm{0}\mathrel{=}\mathrm{2}{}\<[E]%
+\\
+\>[B]{}\Varid{c2}\;(\Varid{n}\mathbin{+}\mathrm{1})\mathrel{=}\mathrm{1}\mathbin{+}\Varid{c2}\;(\Varid{n}){}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+Assim, estamos em condições de aplicar a \emph{regra}, onde $inic = (1, \ \ 2, \ \ 2)$ e $loop (catal, \ c1, \ c2) = (quot \ (catal \cdot c1) \ \ c2, \ 4+c1, \ 1+c2)$.
+
 
 \subsection*{Problema 3}
 

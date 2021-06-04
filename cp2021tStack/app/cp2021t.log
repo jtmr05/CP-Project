@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.4.28)  15 MAY 2021 15:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.5.19)  4 JUN 2021 13:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -797,7 +797,21 @@ Overfull \hbox (103.62514pt too wide) in paragraph at lines 1579--1590
  [][] 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 1618--1624
+
+ []
+
 [13]
+Overfull \hbox (1.0487pt too wide) in paragraph at lines 1662--1664
+\OT1/ppl/m/n/10 Assim, es-ta-mos em condi[][]oes de apli-car a \OT1/ppl/m/it/10
+ re-gra\OT1/ppl/m/n/10 , onde $\OML/cmm/m/it/10 inic \OT1/cmr/m/n/10 = (1\OML/c
+mm/m/it/10 ;   \OT1/cmr/m/n/10 2\OML/cmm/m/it/10 ;   \OT1/cmr/m/n/10 2)$ \OT1/p
+pl/m/n/10 e $\OML/cmm/m/it/10 loop\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 catal;  c\O
+T1/cmr/m/n/10 1\OML/cmm/m/it/10 ;  c\OT1/cmr/m/n/10 2) = (\OML/cmm/m/it/10 quot
+ \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 catal \OMS/cmsy/m/n/10 ^^A
+ []
+
 No file cp2021t.ind.
 No file cp2021t.bbl.
 [14] (./cp2021t.aux)
@@ -839,7 +853,7 @@ urw/palatino/uplr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/palatino/uplr8a.
 pfb></usr/share/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb></usr/share/tex
 mf-dist/fonts/type1/public/xypic/xyatip10.pfb></usr/share/texmf-dist/fonts/type
 1/public/xypic/xybtip10.pfb>
-Output written on cp2021t.pdf (14 pages, 330807 bytes).
+Output written on cp2021t.pdf (14 pages, 334821 bytes).
 PDF statistics:
  355 PDF objects out of 1000 (max. 8388607)
  306 compressed objects within 4 object streams
