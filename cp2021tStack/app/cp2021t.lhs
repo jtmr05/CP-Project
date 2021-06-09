@@ -1037,7 +1037,6 @@ sd_gen = undefined
 ad_gen = undefined
 \end{code}
 
---Problema 2
 \subsection*{Problema 2}
 Definir
 \begin{code}
@@ -1096,15 +1095,23 @@ Assim, estamos em condições de aplicar a \emph{regra}, onde $inic = (1, \ \ 2,
 
 \begin{code}
 calcLine :: NPoint -> (NPoint -> OverTime NPoint)
-calcLine = cataList h where
-   h = undefined
+calcLine p x t = cataList h list where
+   h = either nil (cons . ((`aux` t) >< id))
+   list = zip p x
+   aux = uncurry linear1d
+
 
 deCasteljau :: [NPoint] -> OverTime NPoint
-deCasteljau = hyloAlgForm alg coalg where
-   coalg = undefined
-   alg = undefined
+deCasteljau [] _ = []
+deCasteljau l t = hyloAlgForm alg coalg l where
+   coalg = divide
+   alg = either id aux
+   aux (a,b) = calcLine a b t
+   divide [x] = i1 x
+   divide [] = i2 ([],[])
+   divide l = i2 (init l, tail l)
 
-hyloAlgForm = undefined
+hyloAlgForm = hyloLTree
 \end{code}
 
 \subsection*{Problema 4}
