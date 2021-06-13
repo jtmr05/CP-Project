@@ -1596,7 +1596,6 @@ Definir:
 \ColumnHook
 \end{hscode}\resethooks
 
---Problema 2
 \subsection*{Problema 2}
 Definir
 \begin{hscode}\SaveRestoreHook
@@ -1671,22 +1670,42 @@ Assim, estamos em condições de aplicar a \emph{regra}, onde $inic = (1, \ \ 2,
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{calcLine}\mathbin{::}\Conid{NPoint}\to (\Conid{NPoint}\to \Conid{OverTime}\;\Conid{NPoint}){}\<[E]%
 \\
-\>[B]{}\Varid{calcLine}\mathrel{=}\Varid{cataList}\;\Varid{h}\;\mathbf{where}{}\<[E]%
+\>[B]{}\Varid{calcLine}\;\Varid{p}\;\Varid{x}\;\Varid{t}\mathrel{=}\Varid{cataList}\;\Varid{h}\;\Varid{list}\;\mathbf{where}{}\<[E]%
 \\
 \>[B]{}\hsindent{4}{}\<[4]%
-\>[4]{}\Varid{h}\mathrel{=}\bot {}\<[E]%
+\>[4]{}\Varid{h}\mathrel{=}\alt{\Varid{nil}}{\Varid{cons}\comp ((\mathbin{`\Varid{aux}`}\Varid{t})\times\Varid{id})}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{list}\mathrel{=}\Varid{zip}\;\Varid{p}\;\Varid{x}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{aux}\mathrel{=}\uncurry{\Varid{linear1d}}{}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\Varid{deCasteljau}\mathbin{::}[\mskip1.5mu \Conid{NPoint}\mskip1.5mu]\to \Conid{OverTime}\;\Conid{NPoint}{}\<[E]%
 \\
-\>[B]{}\Varid{deCasteljau}\mathrel{=}\Varid{hyloAlgForm}\;\Varid{alg}\;\Varid{coalg}\;\mathbf{where}{}\<[E]%
+\>[B]{}\Varid{deCasteljau}\;[\mskip1.5mu \mskip1.5mu]\;\anonymous \mathrel{=}[\mskip1.5mu \mskip1.5mu]{}\<[E]%
+\\
+\>[B]{}\Varid{deCasteljau}\;\Varid{l}\;\Varid{t}\mathrel{=}\Varid{hyloAlgForm}\;\Varid{alg}\;\Varid{coalg}\;\Varid{l}\;\mathbf{where}{}\<[E]%
 \\
 \>[B]{}\hsindent{4}{}\<[4]%
-\>[4]{}\Varid{coalg}\mathrel{=}\bot {}\<[E]%
+\>[4]{}\Varid{coalg}\mathrel{=}\Varid{divide}{}\<[E]%
 \\
 \>[B]{}\hsindent{4}{}\<[4]%
-\>[4]{}\Varid{alg}\mathrel{=}\bot {}\<[E]%
+\>[4]{}\Varid{alg}\mathrel{=}\alt{\Varid{id}}{\Varid{aux}}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{aux}\;(\Varid{a},\Varid{b})\mathrel{=}\Varid{calcLine}\;\Varid{a}\;\Varid{b}\;\Varid{t}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{divide}\;[\mskip1.5mu \Varid{x}\mskip1.5mu]\mathrel{=}i_1\;\Varid{x}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{divide}\;[\mskip1.5mu \mskip1.5mu]\mathrel{=}i_2\;([\mskip1.5mu \mskip1.5mu],[\mskip1.5mu \mskip1.5mu]){}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{divide}\;\Varid{l}\mathrel{=}i_2\;(\Varid{init}\;\Varid{l},\Varid{tail}\;\Varid{l}){}\<[E]%
 \\[\blanklineskip]%
-\>[B]{}\Varid{hyloAlgForm}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{hyloAlgForm}\mathrel{=}\Varid{hyloLTree}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
@@ -1753,6 +1772,93 @@ Solução para árvores de tipo \LTree:
 \>[11]{}\Varid{len}\;((\Varid{a},\Varid{b}),(\Varid{c},\Varid{d}))\mathrel{=}\Varid{b}\mathbin{+}\Varid{d}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
+\\
+Resolução:
+\\ 
+Alínea 1.
+\\
+A partir dos dados do problema, podemos inferir o seguinte diagrama:
+\begin{eqnarray*}
+\xymatrix@C=2cm{
+    {T}
+           \ar[d]_-{\ensuremath{\cata{\Varid{g}}}}
+           \ar@/^/[r]^{outNL}
+&
+    {\ensuremath{\Conid{F}} {T}}
+           \ar@/^/[l]_{\cong}^{inNL}
+           \ar[d]^{\ensuremath{\Conid{F}\;\cata{\Varid{g}}}}
+\\
+     {A}
+&
+     {\ensuremath{\Conid{F}} {A}}
+           \ar@/^/[l]^-{\ensuremath{\Conid{F}} {A}} 
+}
+\end{eqnarray*}
+Como estamos perante listas vazias, podemos também inferir será que $\ensuremath{\Varid{inNL}\mathrel{=}\alt{\Varid{singl}}{\Varid{cons}}}$, pois, os dois únicos casos possíveis
+de uma lista deste tipo serão ou termos um elemento da lista, ou termos uma lista completa.\\
+Falta-nos no entanto inferir $\ensuremath{\Varid{outNL}}$, no entanto, sabemos que, por se tratar de um isomorfismo, $\ensuremath{\Varid{outNL}\comp \Varid{inNL}\mathrel{=}\Varid{id}}$, logo
+de forma a obtermos $\ensuremath{\Varid{outNL}}$ vamos resolver essa equação:
+\begin{eqnarray*}
+\start
+  \ensuremath{\Varid{outNL}\comp \Varid{inNL}\mathrel{=}\Varid{id}}
+%
+\just\equiv{ Def-\ensuremath{\Varid{inNL}} }
+  \ensuremath{\Varid{out}\comp [\mskip1.5mu \Varid{singl},\Varid{cons}\mskip1.5mu]\mathrel{=}\Varid{id}}
+%
+\just\equiv{ Fusão-+ (lei 20) }
+  \ensuremath{[\mskip1.5mu \Varid{out}\comp \Varid{singl},\Varid{out}\comp \Varid{cons}\mskip1.5mu]\mathrel{=}\Varid{id}}
+%
+\just\equiv{ Universal-+ (lei 17) with k = id, f = out . singl, g = out . cons}
+%
+        \ensuremath{\begin{lcbr}\Varid{id}\comp i_1\mathrel{=}\Varid{out}\comp \Varid{singl}\\\Varid{id}\comp i_2\mathrel{=}\Varid{out}\comp \Varid{cons}\end{lcbr}}
+%
+\just\equiv{ Natural-id (lei 1) aplicada 2 vezes }
+        \ensuremath{\begin{lcbr}i_1\mathrel{=}\Varid{out}\comp \Varid{singl}\\i_2\mathrel{=}\Varid{out}\comp \Varid{cons}\end{lcbr}}
+%
+\just\equiv{ Igualdade Extensional (lei 71) }
+        \ensuremath{\begin{lcbr}(\Varid{out}\comp \Varid{singl})\;\Varid{x}\mathrel{=}i_1\;\Varid{x}\\(\Varid{out}\comp \Varid{cons})\;\Varid{x}\mathrel{=}i_2\;\Varid{x}\end{lcbr}}
+%
+\just\equiv{ Def-Comp (lei 72) aplicada 2 vezes }
+        \ensuremath{\begin{lcbr}\Varid{out}\;(\Varid{singl}\;\Varid{x})\mathrel{=}i_1\;\Varid{x}\\\Varid{out}\;(\Varid{cons}\;(\Varid{h},\Varid{t}))\mathrel{=}i_2\;(\Varid{h},\Varid{t})\end{lcbr}}
+%
+\just\equiv{ Def-singl, Def-cons }
+        \ensuremath{\begin{lcbr}\Varid{out}\;[\mskip1.5mu \Varid{x}\mskip1.5mu]\mathrel{=}i_1\;\Varid{x}\\\Varid{out}\;(\Varid{h}\mathbin{:}\Varid{t})\mathrel{=}i_2\;(\Varid{h},\Varid{t})\end{lcbr}}
+\end{eqnarray*}
+Tendo já definido $\ensuremath{\Varid{inNL}}$ e $\ensuremath{\Varid{outNL}}$, vamos agora procurar conhecer o catamorfismo.\\
+Sabemos, de antemão, que o comprimento da lista será um natural positivo ou zero e que a média
+é um racional/double. Então podemos o seguinte diagrama:
+\begin{eqnarray*}
+\xymatrix@C=2cm{
+    {L}
+           \ar[d]_-{\ensuremath{\cata{\Varid{g}}}}
+           \ar@/^/[r]^{outNL}
+&
+    {\ensuremath{\Conid{A}\mathbin{+}\Conid{A}\times\Conid{L}}}
+           \ar@/^/[l]_{\cong}^{inNL}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\Varid{g}}}}
+\\
+     {\ensuremath{(\Q ,\N_0)}}
+&
+     {\ensuremath{\Conid{A}\mathbin{+}\Conid{A}\times(\Q ,\N_0)}}
+           \ar@/^/[l]^-{g} 
+}
+\end{eqnarray*}
+Podemos então observar que $\ensuremath{\cata{\Varid{g}}\mathrel{=}\Varid{g}\comp (\Varid{id}\mathbin{+}\Varid{id}\times\cata{\Varid{g}})\comp \Varid{out}}$ e que o functor deste
+tipo de listas é dado por $\ensuremath{\Conid{F}\;\Varid{f}\mathrel{=}\Varid{id}\mathbin{+}\Varid{id}\times\Varid{f}}$.\\
+Assim sendo, podemos ver que $\ensuremath{\cata{\Varid{g}}\mathrel{=}\Varid{g}\comp \Conid{F}\;\cata{\Varid{g}}\comp \Varid{out}}$, o que, escrito em Haskell é dado
+por $\ensuremath{\Varid{cataNL}\mathrel{=}\Varid{g}\comp \Varid{recList}\;(\Varid{cataNL}\;\Varid{g})\comp \Varid{out}}$.\\
+Temos, então, tudo o necessário para implementar a primeira alínea sendo que $av$ faz o cálculo da média ponderada
+até ao nodo atual, $len$ atualiza o comprimento da lista lido recursivamente, $a$ representa o valor
+do nodo da lista atual, $b$ a média calculada recursivamente e $c$ o comprimento da lista já lido.
+\\ \\
+Alínea 2.
+\\
+Tendo em conta que o catamorfismo já se encontra definido, não é necessário calculá-lo a ele, nem ao isomorfismo 
+$in$/$out$, nem o functor. Logo, resta-nos apenas seguir a linha do pensamento anterior, para esta nova estrutura de dados.\\
+Tal como na alínea anterior, $av$ faz o cálculo da média ponderada até ao momento e $len$ atualiza o número de valores lidos.
+A diferença surge apenas nas variáveis. Visto que estamos perante uma árvore, teremos de analisar dois lados ao invés de apenas um,
+então, como seria de esperar teremos duas variáveis que representam as médias ponderadas até ao nodo atual, $a$ e $c$ e outras duas que
+representam os tamanhos lidos recursivamente, $b$ e $d$.\\
 
 \subsection*{Problema 5}
 Inserir em baixo o código \Fsharp\ desenvolvido, entre \text{\ttfamily \char92{}begin\char123{}verbatim\char125{}} e \text{\ttfamily \char92{}end\char123{}verbatim\char125{}}:

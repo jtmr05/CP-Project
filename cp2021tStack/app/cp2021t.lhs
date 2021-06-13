@@ -1141,6 +1141,113 @@ avgLTree = p1.cataLTree gene where
           av((a, b), (c, d)) = (a * b + c * d) / (b + d)
           len((a, b), (c, d)) = b + d
 \end{code}
+\\
+Resolução:
+\\ 
+Alínea 1.
+\\
+A partir dos dados do problema, podemos inferir o seguinte diagrama:
+\begin{eqnarray*}
+\xymatrix@@C=2cm{
+    {T}
+           \ar[d]_-{|cata g|}
+           \ar@@/^/[r]^{outNL}
+&
+    {|F| {T}}
+           \ar@@/^/[l]_{\cong}^{inNL}
+           \ar[d]^{|F (cata g)|}
+\\
+     {A}
+&
+     {|F| {A}}
+           \ar@@/^/[l]^-{|F| {A}} 
+}
+\end{eqnarray*}
+Como estamos perante listas vazias, podemos também inferir será que $|inNL = either singl cons|$, pois, os dois únicos casos possíveis
+de uma lista deste tipo serão ou termos um elemento da lista, ou termos uma lista completa.\\
+Falta-nos no entanto inferir $|outNL|$, no entanto, sabemos que, por se tratar de um isomorfismo, $|outNL . inNL = id|$, logo
+de forma a obtermos $|outNL|$ vamos resolver essa equação:
+\begin{eqnarray*}
+\start
+  |outNL . inNL = id|
+%
+\just\equiv{ Def-|inNL| }
+  |out . [singl, cons] = id|
+%
+\just\equiv{ Fusão-+ (lei 20) }
+  |[out . singl, out . cons] = id|
+%
+\just\equiv{ Universal-+ (lei 17) with k = id, f = out . singl, g = out . cons}
+%
+        |lcbr(
+    id . i1 = out . singl
+  )(
+    id . i2 = out . cons      
+  )|
+%
+\just\equiv{ Natural-id (lei 1) aplicada 2 vezes }
+        |lcbr(
+    i1 = out . singl      
+  )(
+    i2 = out . cons      
+  )|
+%
+\just\equiv{ Igualdade Extensional (lei 71) }
+        |lcbr(
+    (out . singl) x = i1 x   
+  )(
+    (out . cons) x = i2 x   
+  )|
+%
+\just\equiv{ Def-Comp (lei 72) aplicada 2 vezes }
+        |lcbr(
+     out(singl x) = i1 x     
+    )(
+     out(cons (h, t)) = i2 (h, t)     
+    )|
+%
+\just\equiv{ Def-singl, Def-cons }
+        |lcbr(
+     out[x] = i1 x   
+        )(
+     out(h:t) = i2 (h, t)     
+        )|
+\end{eqnarray*}
+Tendo já definido $|inNL|$ e $|outNL|$, vamos agora procurar conhecer o catamorfismo.\\
+Sabemos, de antemão, que o comprimento da lista será um natural positivo ou zero e que a média
+é um racional/double. Então podemos o seguinte diagrama:
+\begin{eqnarray*}
+\xymatrix@@C=2cm{
+    {L}
+           \ar[d]_-{|cata g|}
+           \ar@@/^/[r]^{outNL}
+&
+    {|A + A >< L|}
+           \ar@@/^/[l]_{\cong}^{inNL}
+           \ar[d]^{|id + id >< (cata g)|}
+\\
+     {|(Rational, Nat0)|}
+&
+     {|A + A >< (Rational, Nat0)|}
+           \ar@@/^/[l]^-{g} 
+}
+\end{eqnarray*}
+Podemos então observar que $|(cata g) = g . (id + id >< (cata g)) . out|$ e que o functor deste
+tipo de listas é dado por $|F f = id + id >< f|$.\\
+Assim sendo, podemos ver que $|(cata g) = g . F (cata g) . out|$, o que, escrito em Haskell é dado
+por $|cataNL = g . recList(cataNL g) . out|$.\\
+Temos, então, tudo o necessário para implementar a primeira alínea sendo que $av$ faz o cálculo da média ponderada
+até ao nodo atual, $len$ atualiza o comprimento da lista lido recursivamente, $a$ representa o valor
+do nodo da lista atual, $b$ a média calculada recursivamente e $c$ o comprimento da lista já lido.
+\\ \\
+Alínea 2.
+\\
+Tendo em conta que o catamorfismo já se encontra definido, não é necessário calculá-lo a ele, nem ao isomorfismo 
+$in$/$out$, nem o functor. Logo, resta-nos apenas seguir a linha do pensamento anterior, para esta nova estrutura de dados.\\
+Tal como na alínea anterior, $av$ faz o cálculo da média ponderada até ao momento e $len$ atualiza o número de valores lidos.
+A diferença surge apenas nas variáveis. Visto que estamos perante uma árvore, teremos de analisar dois lados ao invés de apenas um,
+então, como seria de esperar teremos duas variáveis que representam as médias ponderadas até ao nodo atual, $a$ e $c$ e outras duas que
+representam os tamanhos lidos recursivamente, $b$ e $d$.\\
 
 \subsection*{Problema 5}
 Inserir em baixo o código \Fsharp\ desenvolvido, entre \verb!\begin{verbatim}! e \verb!\end{verbatim}!:
