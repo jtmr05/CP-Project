@@ -307,11 +307,11 @@
 \begin{tabular}{ll}
 \textbf{Grupo} nr. & 111
 \\\hline
-a93166 & João Carvalho
+a93202 & Francisco Alexandre Pinto Neves
 \\
-a93202 & Francisco Neves
+a93166 & João Pedro Rodrigues Carvalho
 \\
-a93310 & Joaquim Roque
+a93310 & Joaquim Tiago Martins Roque
 \end{tabular}
 \end{center}
 
@@ -1555,46 +1555,360 @@ Definir:
 
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{16}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{outExpAr}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{outExpAr}\;\Conid{X}\mathrel{=}i_1\;(){}\<[E]%
+\\
+\>[B]{}\Varid{outExpAr}\;(\Conid{N}\;\Varid{a})\mathrel{=}i_2\;(i_1\;(\Varid{a})){}\<[E]%
+\\
+\>[B]{}\Varid{outExpAr}\;(\Conid{Bin}\;\Varid{op}\;\Varid{a}\;\Varid{b})\mathrel{=}i_2\;(i_2\;(i_1\;(\Varid{op},(\Varid{a},\Varid{b})))){}\<[E]%
+\\
+\>[B]{}\Varid{outExpAr}\;(\Conid{Un}\;\Varid{op}\;\Varid{a})\mathrel{=}i_2\;(i_2\;(i_2\;(\Varid{op},\Varid{a}))){}\<[E]%
 \\
 \>[B]{}\mbox{\onelinecomment }{}\<[E]%
 \\
-\>[B]{}\Varid{recExpAr}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{recExpAr}\;\Varid{h}\mathrel{=}\Varid{id}+(\Varid{id}+(\Varid{id}\times(\Varid{h}\times\Varid{h})+\Varid{id}\times\Varid{h})){}\<[E]%
 \\
 \>[B]{}\mbox{\onelinecomment }{}\<[E]%
 \\
-\>[B]{}\Varid{g\char95 eval\char95 exp}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{g\char95 eval\char95 exp}\;\Varid{a}\mathrel{=}\alt{\underline{\Varid{a}}}{\Varid{nums}}\;\mathbf{where}{}\<[E]%
+\\
+\>[B]{}\hsindent{16}{}\<[16]%
+\>[16]{}\Varid{nums}\mathrel{=}\alt{\Varid{numb}}{\Varid{ops}}{}\<[E]%
+\\
+\>[B]{}\hsindent{16}{}\<[16]%
+\>[16]{}\Varid{ops}\mathrel{=}\alt{\Varid{bins}}{\Varid{uns}}{}\<[E]%
+\\
+\>[B]{}\hsindent{16}{}\<[16]%
+\>[16]{}\Varid{numb}\;\Varid{b}\mathrel{=}\Varid{b}{}\<[E]%
+\\
+\>[B]{}\hsindent{16}{}\<[16]%
+\>[16]{}\Varid{bins}\;(\Conid{Sum},(\Varid{a},\Varid{b}))\mathrel{=}\Varid{a}\mathbin{+}\Varid{b}{}\<[E]%
+\\
+\>[B]{}\hsindent{16}{}\<[16]%
+\>[16]{}\Varid{bins}\;(\Conid{Product},(\Varid{a},\Varid{b}))\mathrel{=}\Varid{a}\mathbin{*}\Varid{b}{}\<[E]%
+\\
+\>[B]{}\hsindent{16}{}\<[16]%
+\>[16]{}\Varid{uns}\;(\Conid{Negate},\Varid{a})\mathrel{=}\Varid{a}\mathbin{*}(\mathbin{-}\mathrm{1}){}\<[E]%
+\\
+\>[B]{}\hsindent{16}{}\<[16]%
+\>[16]{}\Varid{uns}\;(\Conid{E},\Varid{a})\mathrel{=}\Varid{\Conid{Prelude}.exp}\;\Varid{a}{}\<[E]%
 \\
 \>[B]{}\mbox{\onelinecomment }{}\<[E]%
 \\
-\>[B]{}\Varid{clean}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{clean}\;\Conid{X}\mathrel{=}\Varid{outExpAr}\;\Conid{X}{}\<[E]%
 \\
+\>[B]{}\Varid{clean}\;(\Conid{N}\;\Varid{a})\mathrel{=}\Varid{outExpAr}\;(\Conid{N}\;\Varid{a}){}\<[E]%
+\\
+\>[B]{}\Varid{clean}\;(\Conid{Bin}\;\Conid{Sum}\;\Varid{a}\;\Varid{b})\mathrel{=}\Varid{outExpAr}\;(\Conid{Bin}\;\Conid{Sum}\;\Varid{a}\;\Varid{b}){}\<[E]%
+\\
+\>[B]{}\Varid{clean}\;(\Conid{Bin}\;\Conid{Product}\;(\Conid{N}\;\mathrm{0})\;\Varid{b})\mathrel{=}\Varid{outExpAr}\;(\Conid{N}\;\mathrm{0}){}\<[E]%
+\\
+\>[B]{}\Varid{clean}\;(\Conid{Bin}\;\Conid{Product}\;\Varid{a}\;(\Conid{N}\;\mathrm{0}))\mathrel{=}\Varid{outExpAr}\;(\Conid{N}\;\mathrm{0}){}\<[E]%
+\\
+\>[B]{}\Varid{clean}\;(\Conid{Bin}\;\Conid{Product}\;\Varid{a}\;\Varid{b})\mathrel{=}\Varid{outExpAr}\;(\Conid{Bin}\;\Conid{Product}\;\Varid{a}\;\Varid{b}){}\<[E]%
+\\
+\>[B]{}\Varid{clean}\;(\Conid{Un}\;\Conid{Negate}\;\Varid{a})\mathrel{=}\Varid{outExpAr}\;(\Conid{Un}\;\Conid{Negate}\;\Varid{a}){}\<[E]%
+\\
+\>[B]{}\Varid{clean}\;(\Conid{Un}\;\Conid{E}\;(\Conid{N}\;\mathrm{0}))\mathrel{=}\Varid{outExpAr}\;(\Conid{N}\;\mathrm{1}){}\<[E]%
+\\
+\>[B]{}\Varid{clean}\;(\Conid{Un}\;\Conid{E}\;\Varid{a})\mathrel{=}\Varid{outExpAr}\;(\Conid{Un}\;\Conid{E}\;\Varid{a}){}\<[E]%
+\\[\blanklineskip]%
 \>[B]{}\mbox{\onelinecomment }{}\<[E]%
 \\
-\>[B]{}\Varid{gopt}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{gopt}\;\Varid{a}\mathrel{=}\Varid{g\char95 eval\char95 exp}\;\Varid{a}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{5}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{11}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{sd\char95 gen}\mathbin{::}\Conid{Floating}\;\Varid{a}\Rightarrow {}\<[E]%
 \\
 \>[B]{}\hsindent{5}{}\<[5]%
 \>[5]{}()+(\Varid{a}+((\Conid{BinOp},((\Conid{ExpAr}\;\Varid{a},\Conid{ExpAr}\;\Varid{a}),(\Conid{ExpAr}\;\Varid{a},\Conid{ExpAr}\;\Varid{a})))+(\Conid{UnOp},(\Conid{ExpAr}\;\Varid{a},\Conid{ExpAr}\;\Varid{a}))))\to (\Conid{ExpAr}\;\Varid{a},\Conid{ExpAr}\;\Varid{a}){}\<[E]%
 \\
-\>[B]{}\Varid{sd\char95 gen}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{sd\char95 gen}\mathrel{=}\alt{\Varid{derivx}}{\Varid{nums}}\;\mathbf{where}{}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{nums}\mathrel{=}\alt{\Varid{numb}}{\Varid{ops}}{}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{ops}\mathrel{=}\alt{\Varid{bins}}{\Varid{uns}}{}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{derivx}\;()\mathrel{=}(\Conid{X},\Conid{N}\;\mathrm{1}){}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{numb}\;\Varid{b}\mathrel{=}(\Conid{N}\;\Varid{b},\Conid{N}\;\mathrm{0}){}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{bins}\;(\Conid{Sum},((\Varid{a1},\Varid{a2}),(\Varid{b1},\Varid{b2})))\mathrel{=}(\Conid{Bin}\;\Conid{Sum}\;\Varid{a1}\;\Varid{b1},\Conid{Bin}\;\Conid{Sum}\;\Varid{a2}\;\Varid{b2}){}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{bins}\;(\Conid{Product},((\Varid{a1},\Varid{a2}),(\Varid{b1},\Varid{b2})))\mathrel{=}(\Conid{Bin}\;\Conid{Product}\;\Varid{a1}\;\Varid{b1},\Conid{Bin}\;\Conid{Sum}\;(\Conid{Bin}\;\Conid{Product}\;\Varid{a1}\;\Varid{b2})\;(\Conid{Bin}\;\Conid{Product}\;\Varid{a2}\;\Varid{b1})){}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{uns}\;(\Conid{E},(\Varid{a},\Varid{b}))\mathrel{=}(\Conid{Un}\;\Conid{E}\;\Varid{a},\Conid{Bin}\;\Conid{Product}\;(\Conid{Un}\;\Conid{E}\;\Varid{a})\;\Varid{b}){}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{uns}\;(\Conid{Negate},(\Varid{a},\Varid{b}))\mathrel{=}(\Conid{Un}\;\Conid{Negate}\;\Varid{a},\Conid{Un}\;\Conid{Negate}\;\Varid{b}){}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{11}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{ad\char95 gen}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{ad\char95 gen}\;\Varid{v}\mathrel{=}\alt{\Varid{derivx}}{\Varid{nums}}\;\mathbf{where}{}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{nums}\mathrel{=}\alt{\Varid{numb}}{\Varid{ops}}{}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{ops}\mathrel{=}\alt{\Varid{bins}}{\Varid{uns}}{}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{derivx}\;()\mathrel{=}(\Varid{v},\mathrm{1}){}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{numb}\;\Varid{b}\mathrel{=}(\Varid{b},\mathrm{0}){}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{bins}\;(\Conid{Sum},((\Varid{a1},\Varid{a2}),(\Varid{b1},\Varid{b2})))\mathrel{=}(\Varid{a1}\mathbin{+}\Varid{b1},\Varid{a2}\mathbin{+}\Varid{b2}){}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{bins}\;(\Conid{Product},((\Varid{a1},\Varid{a2}),(\Varid{b1},\Varid{b2})))\mathrel{=}(\Varid{a1}\mathbin{*}\Varid{b1},(\Varid{a1}\mathbin{*}\Varid{b2})\mathbin{+}(\Varid{a2}\mathbin{*}\Varid{b1})){}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{uns}\;(\Conid{E},(\Varid{a},\Varid{b}))\mathrel{=}(\Varid{\Conid{Prelude}.exp}\;\Varid{a},\Varid{b}\mathbin{*}(\Varid{\Conid{Prelude}.exp}\;\Varid{a})){}\<[E]%
+\\
+\>[B]{}\hsindent{11}{}\<[11]%
+\>[11]{}\Varid{uns}\;(\Conid{Negate},(\Varid{a},\Varid{b}))\mathrel{=}(\Varid{a}\mathbin{*}(\mathbin{-}\mathrm{1}),\Varid{b}\mathbin{*}(\mathbin{-}\mathrm{1})){}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
+
+Alínea 1
+Resolução
+\\
+Alinea 1:
+\\
+Sabemos que por se tratar de um isomorfismo, $\ensuremath{\Varid{outExpAr}\comp \Varid{inExpAr}\mathrel{=}\Varid{id}}$, logo temos:
+\begin{eqnarray*}
+\start
+  \ensuremath{\Varid{outExpAr}\comp \Varid{inExpAr}\mathrel{=}\Varid{id}}
+%
+\just\equiv{ Def-inExpAr, Reflexão-+, Fusão-+ }
+%
+  \ensuremath{[\mskip1.5mu \Varid{outExpAr}\comp \underline{\Conid{X}},\Varid{outExpAr}\comp \Varid{num\char95 ops}\mskip1.5mu]\mathrel{=}[\mskip1.5mu i_1,i_2\mskip1.5mu]}
+%
+\just\equiv{ Eq-+, Def-\ensuremath{\Varid{num\char95 ops}}, Natural-id }
+%
+        \ensuremath{\begin{lcbr}\Varid{outExpAr}\comp \underline{\Conid{X}}\mathrel{=}i_1\\\Varid{outExpAr}\comp [\mskip1.5mu \Conid{N},\Varid{ops}\mskip1.5mu]\mathrel{=}i_2\comp \Varid{id}\end{lcbr}}  
+%
+\just\equiv{ Reflexão-+, Fusão-+ aplicada 2 vezes }
+%
+\left\{
+   \begin{array}{lll}
+      \ensuremath{\Varid{outExpAr}\comp \underline{\Conid{X}}\mathrel{=}i_1}\\
+      \ensuremath{[\mskip1.5mu \Varid{outExpAr}\comp \Conid{N},\Varid{outExpAr}\comp \Varid{ops}\mskip1.5mu]\mathrel{=}[\mskip1.5mu i_2\comp i_1,i_2\comp i_2\mskip1.5mu]}
+  \end{array}
+\right.
+%
+\just\equiv{ Eq-+, Def-\ensuremath{\Varid{ops}}, Natural-id }
+%
+\left\{
+   \begin{array}{lll}
+      \ensuremath{\Varid{outExpAr}\comp \underline{\Conid{X}}\mathrel{=}i_1}\\
+      \ensuremath{\Varid{outExpAr}\comp \Conid{N}\mathrel{=}i_2\comp i_1}\\
+      \ensuremath{\Varid{outExpAr}\comp [\mskip1.5mu \Varid{bin},\uncurry{\Conid{Un}}\mskip1.5mu]\mathrel{=}i_2\comp i_2\comp \Varid{id}}
+  \end{array}
+\right.
+%
+\just\equiv{Reflexão-+, Fusão-+ aplicada 2 vezes}
+%
+\left\{
+   \begin{array}{lll}
+      \ensuremath{\Varid{outExpAr}\comp \underline{\Conid{X}}\mathrel{=}i_1}\\
+      \ensuremath{\Varid{outExpAr}\comp \Conid{N}\mathrel{=}i_2\comp i_1}\\
+      \ensuremath{[\mskip1.5mu \Varid{outExpAr}\comp \Varid{bin},\Varid{outExpAr}\comp \uncurry{\Conid{Un}}\mskip1.5mu]\mathrel{=}[\mskip1.5mu i_2\comp i_2\comp i_1,i_2\comp i_2\comp i_2\mskip1.5mu]}
+  \end{array}
+\right.
+%
+\just\equiv{Eq-+}
+%
+\left\{
+   \begin{array}{lll}
+      \ensuremath{\Varid{outExpAr}\comp \underline{\Conid{X}}\mathrel{=}i_1}\\
+      \ensuremath{\Varid{outExpAr}\comp \Conid{N}\mathrel{=}i_2\comp i_1}\\
+      \ensuremath{\Varid{outExpAr}\comp \Varid{bin}\mathrel{=}i_2\comp i_2\comp i_1}\\
+      \ensuremath{\Varid{outExpAr}\comp \uncurry{\Conid{Un}}\mathrel{=}i_2\comp i_2\comp i_2}
+  \end{array}
+\right.
+%
+\just\equiv{ Igualdade Extensional}
+%
+\left\{
+   \begin{array}{lll}
+      \ensuremath{\Varid{outExpAr}\comp \underline{\Conid{X}}\;()\mathrel{=}i_1\;()}\\
+      \ensuremath{\Varid{outExpAr}\comp \Conid{N}\;\Varid{a}\mathrel{=}i_2\comp i_1\;\Varid{a}}\\
+      \ensuremath{\Varid{outExpAr}\comp \Varid{bin}\;(\Varid{op},(\Varid{a},\Varid{b}))\mathrel{=}i_2\comp i_2\comp i_1\;(\Varid{op},(\Varid{a},\Varid{b}))}\\
+      \ensuremath{\Varid{outExpAr}\comp \uncurry{\Conid{Un}}\;(\Varid{op},\Varid{a})\mathrel{=}i_2\comp i_2\comp i_2\;(\Varid{op},\Varid{a})}
+  \end{array}
+\right.
+%
+\just\equiv{ Def-const, Def-Comp, Def-\ensuremath{\Varid{bin}}, Def-uncurry}
+%
+\left\{
+   \begin{array}{lll}
+      \ensuremath{\Varid{outExpAr}\;\underline{\Conid{X}}\mathrel{=}i_1\;()}\\
+      \ensuremath{\Varid{outExpAr}\;(\Conid{N}\;\Varid{a})\mathrel{=}i_2\;(i_1\;(\Varid{a}))}\\
+      \ensuremath{\Varid{outExpAr}\;(\Conid{Bin}\;\Varid{op}\;\Varid{a}\;\Varid{b})\mathrel{=}i_2\;(i_2\;(i_1\;(\Varid{op},(\Varid{a},\Varid{b}))))}\\
+      \ensuremath{\Varid{outExpAr}\;(\Conid{Un}\;\Varid{op}\;\Varid{a})\mathrel{=}i_2\;(i_2\;(i_2\;(\Varid{op},\Varid{a})))}
+  \end{array}
+\right.
+\end{eqnarray*}
+Sabendo que $\ensuremath{\Varid{recExpAr}}$ irá aplicar uma função que recebe como argumento a todos os elementos que resultam de $\ensuremath{\Varid{outExpAr}}$
+Assim, a partir de $\ensuremath{\Varid{baseExpAr}}$ e do sseguinte diagrama:
+\begin{eqnarray*}
+\xymatrix@C=2cm{
+{\ensuremath{\Conid{ExpAr}\;\Varid{a}}} \ar@/^2pc/[rr]^-{outExpAr} & {\cong} & {1 + (a + ((BinOp \ensuremath{\times} \ensuremath{\Conid{ExpAr}\;\Varid{a}} ^ 2) + (\ensuremath{\Conid{UnOp}\times\Conid{ExpAr}\;\Varid{a}}) ))} \ar@/^2pc/[ll]^-{inExpAr}
+}
+\end{eqnarray*}
+Temos que:
+\begin{eqnarray*} 
+recExpAr f = \ensuremath{\Varid{id}\mathbin{+}\Varid{id}\mathbin{+}\Varid{id}\times}f^2 + \ensuremath{\Varid{id}\times\Varid{f}}
+\end{eqnarray*}
+\\ \\
+Alínea 2:
+\\
+(Nas alíneas seguintes \ensuremath{\Conid{ExpAr}\;\Varid{a}} será substituido por \ensuremath{\Conid{ExpAr}} apenas por simplificação)
+\\Sabendo que a função $\ensuremath{\Varid{g\char95 eval\char95 exp}}$ se trata do gene do catamorfismo $\ensuremath{\Varid{eval\char95 exp}}$ que tem como objetivo calcular o valor de uma $\ensuremath{\Conid{ExpAr}}$ (dado um valor para substituir a incognita), tendo ainda em conta a definição de $\ensuremath{\Varid{recExpAr}}$ temos o diagrama:
+\begin{eqnarray*}
+\xymatrix@C=2cm{
+    \ensuremath{\Conid{ExpAr}}
+           \ar[d]_-{\ensuremath{\Varid{eval\char95 exp}}}
+&
+    \ensuremath{\mathrm{1}\mathbin{+}(\N_0\mathbin{+}((\Conid{BinOp}\times\Conid{ExpAr}\times\Conid{ExpAr})\mathbin{+}(\Conid{UnOp}\times\Conid{ExpAr})))}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}(\Varid{id}\mathbin{+}(\Varid{id}\times\Varid{eval\char95 exp}\times\Varid{eval\char95 exp}\mathbin{+}\Varid{id}\times\Varid{eval\char95 exp}))}}
+           \ar[l]_-{\ensuremath{\Varid{inExpAr}}}
+\\
+     \ensuremath{\Varid{a}}
+&
+     \ensuremath{\mathrm{1}\mathbin{+}(\Varid{a}\mathbin{+}((\Conid{BinOp}\times\Varid{a}\times\Varid{a})\mathbin{+}(\Conid{UnOp}\times\Varid{a})))}
+           \ar[l]^-{\ensuremath{\Varid{g\char95 eval\char95 exp}}}
+}
+\end{eqnarray*}
+Assim, prevendo as hipoteses existentes, temos que um \ensuremath{\Conid{BinOp}} pode corresponder a uma soma ou a um produto e que um \ensuremath{\Conid{UnOp}} pode corresponder a um \ensuremath{\Conid{Negate}} ou a um \ensuremath{\Conid{E}}, tendo em conta as propriedades do calculo a que correspondem estas expressões teremos que o gene de \ensuremath{\Varid{eval\char95 exp}} será:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{g\char95 eval\char95 exp}\;\Varid{a}\mathrel{=}[\mskip1.5mu \underline{\Varid{a}},[\mskip1.5mu \Varid{numb},[\mskip1.5mu \Varid{bins},\Varid{uns}\mskip1.5mu]\mskip1.5mu]\mskip1.5mu]{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+Com \ensuremath{\Varid{numb}}, \ensuremath{\Varid{bins}} e \ensuremath{\Varid{uns}}, que devolvem o valor de um numero b, o resultado de uma operação binária e o resultado de uma operação unária respetivamente.
+\\ \\
+Alinea 3:
+\\
+Nesta alínea pede-se que se implemente os genes da função \ensuremath{\Varid{optimize\char95 eval}} que têm como objetivo calcular o valor de uma expressão mas de uma forma mais eficiente.
+Sendo \ensuremath{\Varid{clean}} o gene do anamorfismo responsável por limpar os casos em que ocorre um elemento absorvente da operação e \ensuremath{\Varid{gopt}} o gene do catamorfismo responsável por calcular o valor de uma expressão temos os diagramas:
+\begin{eqnarray*}
+\xymatrix@C=2cm{
+    \ensuremath{\Conid{ExpAr}}
+           \ar[d]_-{\ensuremath{\Varid{ana}\;\Varid{clean}}}
+           \ar[r]_-{\ensuremath{\Varid{clean}}}
+&
+    \ensuremath{\mathrm{1}\mathbin{+}(\Varid{a}\mathbin{+}((\Conid{BinOp}\times\Conid{ExpAr}\times\Conid{ExpAr})\mathbin{+}(\Conid{UnOp}\times\Conid{ExpAr})))}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}(\Varid{id}\mathbin{+}(\Varid{id}\times(\Varid{ana}\;\Varid{clean})\times(\Varid{ana}\;\Varid{clean})\mathbin{+}\Varid{id}\times(\Varid{ana}\;\Varid{clean})))}}
+\\
+     \ensuremath{\Conid{ExpAr}}
+           \ar[r]^-{\ensuremath{\Varid{outExpAr}}} 
+&
+     \ensuremath{\mathrm{1}\mathbin{+}(\Varid{a}\mathbin{+}((\Conid{BinOp}\times\Conid{ExpAr}\times\Conid{ExpAr})\mathbin{+}(\Conid{UnOp}\times\Conid{ExpAr})))} 
+}
+\end{eqnarray*}
+\begin{eqnarray*}
+\xymatrix@C=2cm{
+    \ensuremath{\Conid{ExpAr}}
+           \ar[d]_-{\ensuremath{\cata{\Varid{gopt}}}}
+&
+    \ensuremath{\mathrm{1}\mathbin{+}(\N_0\mathbin{+}((\Conid{BinOp}\times\Conid{ExpAr}\times\Conid{ExpAr})\mathbin{+}(\Conid{UnOp}\times\Conid{ExpAr})))}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}(\Varid{id}\mathbin{+}(\Varid{id}\times\cata{\Varid{gopt}}\times\cata{\Varid{gopt}}\mathbin{+}\Varid{id}\times\cata{\Varid{gopt}}))}}
+           \ar[l]_-{\ensuremath{\Varid{inExpAr}}}
+\\
+     \ensuremath{\Varid{a}}
+&
+     \ensuremath{\mathrm{1}\mathbin{+}(\Varid{a}\mathbin{+}((\Conid{BinOp}\times\Varid{a}\times\Varid{a})\mathbin{+}(\Conid{UnOp}\times\Varid{a})))}
+           \ar[l]^-{\ensuremath{\Varid{gopt}}}
+}
+\end{eqnarray*}
+Assim sendo \ensuremath{\Varid{clean}} poderá ser definida usando \ensuremath{\Varid{outExpAr}}.
+Tendo todas estas situações em conta, sabendo que o elemento absorvente da multiplicação é 0 e sabendo ainda que ${\ensuremath{\Varid{e}}^0}$ é sempre igual a 1 a função clean irá abordar estas situações, nas restantes irá aplicar apenas a função \ensuremath{\Varid{outExpAr}}.
+
+Já a \ensuremath{\cata{\Varid{gopt}}} terá uma função semelhante à de \ensuremath{\Varid{eval\char95 exp}}, calcular o valor de uma \ensuremath{\Conid{ExpAr}}, logo podemos definir \ensuremath{\Varid{gopt}} como sendo igual a \ensuremath{\Varid{g\char95 eval\char95 exp}}.
+\\ \\
+Alínea 4
+\\
+Nesta alínea pretende-se definir o gene do catamorfismo de \ensuremath{\Varid{sd}} que tem como objetivo calcular a derivada de uma expressão.
+Sabemos que, de acordo com as regras das derivadas por vezes vamos precisar da expressão original (isto é, não derivada) para aplicar outras leis de derivação. 
+Para isso pretende-se, ao calcular a derivada de uma expressão, possibilitar o acesso à expressão original, usando-se para isso, tal como sugerido pela forma como \ensuremath{\Varid{sd}} é definido no enunciado, um split em que o lado esquerdo corresponde â expressão original e o direito à derivada.
+Assim, temos o diagrama:
+\begin{eqnarray*}
+\xymatrix@C=1cm{
+    \ensuremath{\Conid{ExpAr}}
+           \ar[d]_-{\ensuremath{\cata{\Varid{sd\char95 gen}}}}
+&
+    \ensuremath{\mathrm{1}\mathbin{+}(\Varid{a}\mathbin{+}((\Conid{BinOp}\times\Conid{ExpAr}\times\Conid{ExpAr})\mathbin{+}(\Conid{UnOp}\times\Conid{ExpAr})))}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}(\Varid{id}\mathbin{+}(\Varid{id}\times\cata{\Varid{sd\char95 gen}}\times\cata{\Varid{sd\char95 gen}}\mathbin{+}\Varid{id}\times\cata{\Varid{sd\char95 gen}}))}}
+           \ar[l]_-{\ensuremath{\Varid{inExpAr}}}
+\\
+     {\ensuremath{\Conid{ExpAr}}^2}
+&
+     {1 + (a + ((BinOp \ensuremath{\times} \ensuremath{(\Conid{ExpAr})}^2 \ensuremath{\times} \ensuremath{(\Conid{ExpAr})}^2 ) + (UnOp \ensuremath{\times} \ensuremath{(\Conid{ExpAr})}^2) ))}
+           \ar[l]^-{\ensuremath{\Varid{sd\char95 gen}}}
+}
+\end{eqnarray*}
+Daqui temos:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{sd\char95 gen}\mathrel{=}[\mskip1.5mu \Varid{derivx},[\mskip1.5mu \Varid{numb},[\mskip1.5mu \Varid{bins},\Varid{uns}\mskip1.5mu]\mskip1.5mu]\mskip1.5mu]{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+Assim, tendo em conta as regras de derivação para as diferentes operações chegamos à definição apresentada.
+Com \ensuremath{\Varid{derivx}} a calcular a derivada de uma incognita, \ensuremath{\Varid{numb}} a calcular a derivada de um numero \ensuremath{\Varid{a}}, \ensuremath{\Varid{bins}} e \ensuremath{\Varid{uns}} a calcularem a derivada das expressões binárias e unárias associadas ao tipo \ensuremath{\Conid{ExpAr}}.
+\\ \\
+Alinea 5
+\\
+Por fim pede-se para determinar o gene do catamorfismo que calcula o valor (numerico) da derivada de uma expressão.
+De forma semelhante à alinea anterior é necessário guardar também o valor original da expressão derivada e ao mesmo tempo o valor da derivada.
+Assim temos o diagrama:
+\begin{eqnarray*}
+\xymatrix@C=1cm{
+    \ensuremath{\Conid{ExpAr}}
+           \ar[d]_-{\ensuremath{\cata{\Varid{ad\char95 gen}}}}
+&
+    \ensuremath{\mathrm{1}\mathbin{+}(\Varid{a}\mathbin{+}((\Conid{BinOp}\times\Conid{ExpAr}\times\Conid{ExpAr})\mathbin{+}(\Conid{UnOp}\times\Conid{ExpAr})))}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}(\Varid{id}\mathbin{+}(\Varid{id}\times\cata{\Varid{ad\char95 gen}}\times\cata{\Varid{ad\char95 gen}}\mathbin{+}\Varid{id}\times\cata{\Varid{ad\char95 gen}}))}}
+           \ar[l]_-{\ensuremath{\Varid{inExpAr}}}
+\\
+     {\ensuremath{\Varid{a}}^2}
+&
+     {1 + (a + ((BinOp \ensuremath{\times} \ensuremath{\Varid{a}}^2 \ensuremath{\times} \ensuremath{\Varid{a}}^2 ) + (UnOp \ensuremath{\times} \ensuremath{\Varid{a}}^2) ))}
+           \ar[l]^-{\ensuremath{\Varid{ad\char95 gen}}}
+}
+\end{eqnarray*}
+Temos ainda:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{sd\char95 gen}\mathrel{=}[\mskip1.5mu \Varid{derivx},[\mskip1.5mu \Varid{numb},[\mskip1.5mu \Varid{bins},\Varid{uns}\mskip1.5mu]\mskip1.5mu]\mskip1.5mu]{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+Mais uma vez, tendo em conta as regras de derivação e que $\ensuremath{\Varid{ad}\mathrel{=}\p2\comp \Varid{cataExpAr}\;\Varid{ad\char95 gen}}$ chegamos à solução apresentada
+em que \ensuremath{\Varid{derivx}} calcula o valor da derivada de \ensuremath{()} que representa uma incogmita, \ensuremath{\Varid{numb}} calcula o valor da derivada de um numero \ensuremath{\Varid{a}} e \ensuremath{\Varid{bins}} e \ensuremath{\Varid{uns}} calculam o valor da derivada das expressões binárias e unárias associadas ao tipo \ensuremath{\Conid{ExpAr}} da forma que é apresentado (mantendo sempre o valor da expressão original de forma a estar acessivel).
 
 \subsection*{Problema 2}
 Definir
@@ -1661,7 +1975,6 @@ Temos, então, a função auxiliar $c(n) = \frac{4n+2}{n+2}$. Podemos decompor $
 \end{hscode}\resethooks
 Assim, estamos em condições de aplicar a \emph{regra}, onde $inic = (1, \ \ 2, \ \ 2)$ e $loop (catal, \ c1, \ c2) = (quot \ (catal \cdot c1) \ \ c2, \ 4+c1, \ 1+c2)$.
 
-
 \subsection*{Problema 3}
 
 \begin{hscode}\SaveRestoreHook
@@ -1670,16 +1983,16 @@ Assim, estamos em condições de aplicar a \emph{regra}, onde $inic = (1, \ \ 2,
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{calcLine}\mathbin{::}\Conid{NPoint}\to (\Conid{NPoint}\to \Conid{OverTime}\;\Conid{NPoint}){}\<[E]%
 \\
-\>[B]{}\Varid{calcLine}\;\Varid{p}\;\Varid{x}\;\Varid{t}\mathrel{=}\Varid{cataList}\;\Varid{h}\;\Varid{list}\;\mathbf{where}{}\<[E]%
+\>[B]{}\Varid{calcLine}\;\Varid{x1}\;\Varid{x2}\;\Varid{t}\mathrel{=}\Varid{cataList}\;\Varid{h}\;\Varid{list}\;\mathbf{where}{}\<[E]%
 \\
 \>[B]{}\hsindent{4}{}\<[4]%
-\>[4]{}\Varid{h}\mathrel{=}\alt{\Varid{nil}}{\Varid{cons}\comp ((\mathbin{`\Varid{aux}`}\Varid{t})\times\Varid{id})}{}\<[E]%
+\>[4]{}\Varid{h}\mathrel{=}\alt{\Varid{nil}}{\Varid{cons}\comp (\Varid{ul1d}\;\Varid{t}\times\Varid{id})}{}\<[E]%
 \\
 \>[B]{}\hsindent{4}{}\<[4]%
-\>[4]{}\Varid{list}\mathrel{=}\Varid{zip}\;\Varid{p}\;\Varid{x}{}\<[E]%
+\>[4]{}\Varid{list}\mathrel{=}\Varid{zip}\;\Varid{x1}\;\Varid{x2}{}\<[E]%
 \\
 \>[B]{}\hsindent{4}{}\<[4]%
-\>[4]{}\Varid{aux}\mathrel{=}\uncurry{\Varid{linear1d}}{}\<[E]%
+\>[4]{}\Varid{ul1d}\;\Varid{t}\;\Varid{p}\mathrel{=}\uncurry{\Varid{linear1d}}\;\Varid{p}\;\Varid{t}{}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\Varid{deCasteljau}\mathbin{::}[\mskip1.5mu \Conid{NPoint}\mskip1.5mu]\to \Conid{OverTime}\;\Conid{NPoint}{}\<[E]%
 \\
@@ -1700,17 +2013,253 @@ Assim, estamos em condições de aplicar a \emph{regra}, onde $inic = (1, \ \ 2,
 \>[4]{}\Varid{divide}\;[\mskip1.5mu \Varid{x}\mskip1.5mu]\mathrel{=}i_1\;\Varid{x}{}\<[E]%
 \\
 \>[B]{}\hsindent{4}{}\<[4]%
-\>[4]{}\Varid{divide}\;[\mskip1.5mu \mskip1.5mu]\mathrel{=}i_2\;([\mskip1.5mu \mskip1.5mu],[\mskip1.5mu \mskip1.5mu]){}\<[E]%
-\\
-\>[B]{}\hsindent{4}{}\<[4]%
 \>[4]{}\Varid{divide}\;\Varid{l}\mathrel{=}i_2\;(\Varid{init}\;\Varid{l},\Varid{tail}\;\Varid{l}){}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\Varid{hyloAlgForm}\mathrel{=}\Varid{hyloLTree}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
-\subsection*{Problema 4}
+Comecemos por simplificar a função fornecida $calcLine$, de modo a chegar a uma função equivalente mas mais simples, tornando o algoritmo em questão mais explícito.
+Temos:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{4}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{8}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{15}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{calcLine}\mathbin{::}\Conid{NPoint}\to (\Conid{NPoint}\to \Conid{OverTime}\;\Conid{NPoint}){}\<[E]%
+\\
+\>[B]{}\Varid{calcLine}\;[\mskip1.5mu \mskip1.5mu]\mathrel{=}\underline{\Varid{nil}}{}\<[E]%
+\\
+\>[B]{}\Varid{calcLine}\;(\Varid{p}\mathbin{:}\Varid{x})\mathrel{=}\overline{\Varid{g}}\;\Varid{p}\;(\Varid{calcLine}\;\Varid{x})\;\mathbf{where}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{g}\mathbin{::}(\Q ,\Conid{NPoint}\to \Conid{OverTime}\;\Conid{NPoint})\to (\Conid{NPoint}\to \Conid{OverTime}\;\Conid{NPoint}){}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{g}\;(\Varid{d},\Varid{f})\;\Varid{l}\mathrel{=}\mathbf{case}\;\Varid{l}\;\mathbf{of}{}\<[E]%
+\\
+\>[4]{}\hsindent{4}{}\<[8]%
+\>[8]{}[\mskip1.5mu \mskip1.5mu]{}\<[15]%
+\>[15]{}\to \Varid{nil}{}\<[E]%
+\\
+\>[4]{}\hsindent{4}{}\<[8]%
+\>[8]{}(\Varid{x}\mathbin{:}\Varid{xs})\to \lambda \Varid{z}\to \Varid{concat}\mathbin{\$}(\Varid{sequenceA}\;[\mskip1.5mu \Varid{singl}\comp \Varid{linear1d}\;\Varid{d}\;\Varid{x},\Varid{f}\;\Varid{xs}\mskip1.5mu])\;\Varid{z}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
 
+Podemos, então, eliminar a função auxiliar $g$ (ajustando nomes de variáveis):
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{19}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{calcLine}\mathbin{::}\Conid{NPoint}\to (\Conid{NPoint}\to \Conid{OverTime}\;\Conid{NPoint}){}\<[E]%
+\\
+\>[B]{}\Varid{calcLine}\;[\mskip1.5mu \mskip1.5mu]\mathrel{=}\underline{\Varid{nil}}{}\<[E]%
+\\
+\>[B]{}\Varid{calcLine}\;(\Varid{x1h}\mathbin{:}\Varid{x1t})\mathrel{=}\lambda \Varid{x2}\;\Varid{t}\to \mathbf{case}\;\Varid{x2}\;\mathbf{of}{}\<[E]%
+\\
+\>[B]{}\hsindent{19}{}\<[19]%
+\>[19]{}[\mskip1.5mu \mskip1.5mu]\to \Varid{nil}\;\Varid{t}{}\<[E]%
+\\
+\>[B]{}\hsindent{19}{}\<[19]%
+\>[19]{}\Varid{x2h}\mathbin{:}\Varid{x2t}\to \Varid{concat}\mathbin{\$}(\Varid{sequenceA}\;[\mskip1.5mu \Varid{singl}\comp \Varid{linear1d}\;\Varid{x1h}\;\Varid{x2h},\Varid{calcLine}\;\Varid{x1t}\;\Varid{x2t}\mskip1.5mu])\;\Varid{t}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Usando a definição de $sequenceA$, esta última linha fica da seguinte forma:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{19}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[19]{}\Varid{x2h}\mathbin{:}\Varid{x2t}\to \Varid{concat}\;[\mskip1.5mu \Varid{singl}\comp \Varid{linear1d}\;\Varid{x1h}\;\Varid{x2h}\;\Varid{t},\Varid{calcLine}\;\Varid{x1t}\;\Varid{x2t}\;\Varid{t}\mskip1.5mu]{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Nesta situação, estamos a concatenar uma lista de um só elemento com uma outra, pelo que temos:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{20}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[20]{}\Varid{x2h}\mathbin{:}\Varid{x2t}\to \Varid{cons}\;(\Varid{linear1d}\;\Varid{x1h}\;\Varid{x2h}\;\Varid{t},\Varid{calcLine}\;\Varid{x1t}\;\Varid{x2t}\;\Varid{t}){}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Daqui, observamos que existem duas listas (em que cada uma representa um ponto) a serem consumidas em simultâneo. Isto porque a interpolação linear entre dois pontos só faz sentido para pontos com a mesma dimensão, ou seja, $length \ x1 == length \ x2$.
+No catamorfismo de listas, temos uma única lista a ser consumida. Para contornar este problema, podemos usar a função pré-definida do \Haskell \ $zip$, cuja assinatura é:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{zip}\mathbin{::}[\mskip1.5mu \Varid{a}\mskip1.5mu]\to [\mskip1.5mu \Varid{b}\mskip1.5mu]\to [\mskip1.5mu (\Varid{a},\Varid{b})\mskip1.5mu]{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Isto é possível porque as coordenadas correspondentes entre os dois pontos estão em posições iguais da respetiva lista. Portanto, em conformidade com o tipo de saída de $zip$, o catamorfismo em questão é aplicado a uma lista de pares. Como $NPoint$ é uma lista de \ensuremath{\Q }, serão pares de \ensuremath{\Q }.
+
+\begin{eqnarray*}
+\xymatrix@C=3cm@R=2cm{
+    {A^*}
+           \ar[d]_-{\ensuremath{\cata{\Varid{h}}}}
+           \ar@/^/[r]^{outList}
+&
+    \ensuremath{\mathrm{1}\mathbin{+}\Conid{A}\times} {A^*}
+           \ar@/^/[l]_{\cong}^{inList}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\Varid{h}}}}
+\\
+     \ensuremath{\Conid{B}}
+&
+     \ensuremath{\mathrm{1}\mathbin{+}\Conid{A}\times\Conid{B}}
+           \ar@/^/[l]^-{\ensuremath{\Varid{h}}}
+}
+\end{eqnarray*}
+
+Já vimos que $A$ será instanciando como \ensuremath{\Q \times\Q }, e pelo tipo de saída da função $calcLine$ temos que $B$ é um $NPoint$, ou seja, $\ensuremath{\Q }^*$. Resta-nos calcular o gene $h$.
+
+Para o caso da esquerda, respeitando a função dada, teremos $nil$. No caso da direita, temos o par cabeça e a cauda, já processada pelo algoritmo. Como $calcLine$ devolve um $NPoint$, devemos calcular a interpolação linear da cabeça usando a função $linear1d$ (\emph{uncurried}) e usar $cons$ para a colocar na lista resultado. De notar ainda que $linear1d$ tem um parâmetro de entrada extra e portanto teremos de definir uma função auxiliar. Logo:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{3}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[3]{}\Varid{h}\mathrel{=}\alt{\Varid{nil}}{\Varid{cons}\comp (\Varid{ul1d}\;\Varid{t}\times\Varid{id})}{}\<[E]%
+\\
+\>[3]{}\mathbf{where}\;\Varid{ul1d}\;\Varid{t}\;\Varid{p}\mathrel{=}\uncurry{\Varid{linear1d}}\;\Varid{p}\;\Varid{t}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Então:
+\begin{eqnarray*}
+\xymatrix@C=3.5cm@R=2cm{
+    {(\ensuremath{\Q \times\Q })^*}
+           \ar[d]_-{\ensuremath{\cata{\alt{\Varid{nil}}{\Varid{cons}\comp (\Varid{ul1d}\;\Varid{t})\times\Varid{id}}}}}
+           \ar@/^/[r]^{outList}
+&
+    \ensuremath{\mathrm{1}\mathbin{+}(\Q \times\Q )\times} {(\ensuremath{\Q \times\Q })^*}
+           \ar@/^/[l]_{\cong}^{inList}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\alt{\Varid{nil}}{\Varid{cons}\comp (\Varid{ul1d}\;\Varid{t})\times\Varid{id}}}}}
+\\
+     {\ensuremath{\Q }^*}
+&
+     \ensuremath{\mathrm{1}\mathbin{+}(\Q \times\Q )\times} {\ensuremath{\Q }^*}
+           \ar@/^/[l]^-{\ensuremath{\alt{\Varid{nil}}{\Varid{cons}\comp (\Varid{ul1d}\;\Varid{t})\times\Varid{id}}}}
+}
+\end{eqnarray*}
+
+Temos, assim, a definição de $calcLine$ como um catamorfismo de listas.
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{4}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{calcLine}\mathbin{::}\Conid{NPoint}\to (\Conid{NPoint}\to \Conid{OverTime}\;\Conid{NPoint}){}\<[E]%
+\\
+\>[B]{}\Varid{calcLine}\;\Varid{x1}\;\Varid{x2}\;\Varid{t}\mathrel{=}\Varid{cataList}\;\Varid{h}\;\Varid{list}\;\mathbf{where}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{h}\mathrel{=}\alt{\Varid{nil}}{\Varid{cons}\comp (\Varid{ul1d}\;\Varid{t}\times\Varid{id})}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{list}\mathrel{=}\Varid{zip}\;\Varid{x1}\;\Varid{x2}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{ul1d}\;\Varid{t}\;\Varid{p}\mathrel{=}\uncurry{\Varid{linear1d}}\;\Varid{p}\;\Varid{t}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+O algoritmo $deCasteljau$ fornecido trata-se de um algoritmo do género \emph{divide and conquer}, em que, para uma lista com um só elemento, o resultado é o elemento solitário da lista; para os restantes casos, ou seja, listas de $N$ elementos, $\forall N>1$, a função é chamada recursivamente para os primeiros $N-1$ e para os últimos $N-1$ elementos. O resultado de cada uma destas chamadas é depois calculado pela função $calcLine$. Nas aulas, foi estudado um algoritmo em tudo muito semelhante a este. Trata-se do \emph{mergeSort}:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{6}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{12}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{16}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{19}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{31}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{mSort}\mathbin{::}\Conid{Ord}\;\Varid{a}\Rightarrow [\mskip1.5mu \Varid{a}\mskip1.5mu]\to [\mskip1.5mu \Varid{a}\mskip1.5mu]{}\<[E]%
+\\
+\>[B]{}\Varid{mSort}\;[\mskip1.5mu \mskip1.5mu]\mathrel{=}[\mskip1.5mu \mskip1.5mu]{}\<[E]%
+\\
+\>[B]{}\Varid{mSort}\;\Varid{l}\mathrel{=}\Varid{hyloLTree}\;\alt{\Varid{singl}}{\Varid{merge}}\;\Varid{lsplit}\;\Varid{l}{}\<[E]%
+\\[\blanklineskip]%
+\>[B]{}\Varid{merge}\;(\Varid{l},[\mskip1.5mu \mskip1.5mu]){}\<[31]%
+\>[31]{}\mathrel{=}\Varid{l}{}\<[E]%
+\\
+\>[B]{}\Varid{merge}\;([\mskip1.5mu \mskip1.5mu],\Varid{r}){}\<[31]%
+\>[31]{}\mathrel{=}\Varid{r}{}\<[E]%
+\\
+\>[B]{}\Varid{merge}\;(\Varid{x}\mathbin{:}\Varid{xs},\Varid{y}\mathbin{:}\Varid{ys}){}\<[E]%
+\\
+\>[B]{}\hsindent{19}{}\<[19]%
+\>[19]{}\mid \Varid{x}\mathbin{<}\Varid{y}{}\<[31]%
+\>[31]{}\mathrel{=}\Varid{x}\mathbin{:}\Varid{merge}\;(\Varid{xs},\Varid{y}\mathbin{:}\Varid{ys}){}\<[E]%
+\\
+\>[B]{}\hsindent{19}{}\<[19]%
+\>[19]{}\mid \Varid{otherwise}\mathrel{=}\Varid{y}\mathbin{:}\Varid{merge}\;(\Varid{x}\mathbin{:}\Varid{xs},\Varid{ys}){}\<[E]%
+\\[\blanklineskip]%
+\>[B]{}\Varid{lsplit}\;[\mskip1.5mu \Varid{x}\mskip1.5mu]\mathrel{=}i_1\;\Varid{x}{}\<[E]%
+\\
+\>[B]{}\Varid{lsplit}\;\Varid{l}{}\<[12]%
+\>[12]{}\mathrel{=}i_2\;(\Varid{sep}\;\Varid{l})\;\mathbf{where}{}\<[E]%
+\\
+\>[B]{}\hsindent{6}{}\<[6]%
+\>[6]{}\Varid{sep}\;[\mskip1.5mu \mskip1.5mu]{}\<[16]%
+\>[16]{}\mathrel{=}([\mskip1.5mu \mskip1.5mu],[\mskip1.5mu \mskip1.5mu]){}\<[E]%
+\\
+\>[B]{}\hsindent{6}{}\<[6]%
+\>[6]{}\Varid{sep}\;(\Varid{h}\mathbin{:}\Varid{t})\mathrel{=}\mathbf{let}\;(\Varid{l},\Varid{r})\mathrel{=}\Varid{sep}\;\Varid{t}\;\mathbf{in}\;(\Varid{h}\mathbin{:}\Varid{r},\Varid{l}){}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Podemos adaptá-lo para o problema em questão. Desde já, sabemos que o hilomorfismo a ser usado será o hilomorfismo das \LTree. O gene do anamorfismo, como podemos observar, trata da parte \emph{divide} do algoritmo. Como dissemos anteriormente, usamos a chamada recursiva para os primeiros e para os últimos $N-1$ elementos. Vamos então defini-lo:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{coalg}\mathrel{=}\Varid{divide}{}\<[E]%
+\\
+\>[B]{}\Varid{divide}\;[\mskip1.5mu \Varid{x}\mskip1.5mu]\mathrel{=}i_1\;\Varid{x}{}\<[E]%
+\\
+\>[B]{}\Varid{divide}\;\Varid{l}\mathrel{=}i_2\;(\Varid{init}\;\Varid{l},\Varid{tail}\;\Varid{l}){}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Agora, devemos encontrar o gene do catamorfismo. Para o caso em que o anamorfismo injeta à esquerda, temos um elemento solitário. Ora, para esse caso está trivialmente calculado o ponto a retornar (é o próprio ponto), logo usamos a função identidade. Já para o caso da direita, temos um par de pontos, resultantes da chamada recursiva do algoritmo para parte inicial e para a parte final da lista. A função recebe ainda um parâmetro extra, por isso usamos uma função auxiliar:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{alg}\mathrel{=}\alt{\Varid{id}}{\Varid{aux}}{}\<[E]%
+\\
+\>[B]{}\Varid{aux}\;(\Varid{a},\Varid{b})\mathrel{=}\Varid{calcLine}\;\Varid{a}\;\Varid{b}\;\Varid{t}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Assim, temos a solução para listas não vazias. Resta-nos o caso da lista vazia, que, respeitando o algoritmo, é a própria lista vazia:
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{4}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{deCasteljau}\mathbin{::}[\mskip1.5mu \Conid{NPoint}\mskip1.5mu]\to \Conid{OverTime}\;\Conid{NPoint}{}\<[E]%
+\\
+\>[B]{}\Varid{deCasteljau}\;[\mskip1.5mu \mskip1.5mu]\;\anonymous \mathrel{=}[\mskip1.5mu \mskip1.5mu]{}\<[E]%
+\\
+\>[B]{}\Varid{deCasteljau}\;\Varid{l}\;\Varid{t}\mathrel{=}\Varid{hyloAlgForm}\;\Varid{alg}\;\Varid{coalg}\;\Varid{l}\;\mathbf{where}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{coalg}\mathrel{=}\Varid{divide}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{alg}\mathrel{=}\alt{\Varid{id}}{\Varid{aux}}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{aux}\;(\Varid{a},\Varid{b})\mathrel{=}\Varid{calcLine}\;\Varid{a}\;\Varid{b}\;\Varid{t}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{divide}\;[\mskip1.5mu \Varid{x}\mskip1.5mu]\mathrel{=}i_1\;\Varid{x}{}\<[E]%
+\\
+\>[B]{}\hsindent{4}{}\<[4]%
+\>[4]{}\Varid{divide}\;\Varid{l}\mathrel{=}i_2\;(\Varid{init}\;\Varid{l},\Varid{tail}\;\Varid{l}){}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\subsection*{Problema 4}
 Solução para listas não vazias:
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
@@ -1772,7 +2321,6 @@ Solução para árvores de tipo \LTree:
 \>[11]{}\Varid{len}\;((\Varid{a},\Varid{b}),(\Varid{c},\Varid{d}))\mathrel{=}\Varid{b}\mathbin{+}\Varid{d}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
-\\
 Resolução:
 \\ 
 Alínea 1.
@@ -1859,12 +2407,148 @@ Tal como na alínea anterior, $av$ faz o cálculo da média ponderada até ao mo
 A diferença surge apenas nas variáveis. Visto que estamos perante uma árvore, teremos de analisar dois lados ao invés de apenas um,
 então, como seria de esperar teremos duas variáveis que representam as médias ponderadas até ao nodo atual, $a$ e $c$ e outras duas que
 representam os tamanhos lidos recursivamente, $b$ e $d$.\\
-
 \subsection*{Problema 5}
 Inserir em baixo o código \Fsharp\ desenvolvido, entre \text{\ttfamily \char92{}begin\char123{}verbatim\char125{}} e \text{\ttfamily \char92{}end\char123{}verbatim\char125{}}:
 
 \begin{tabbing}\ttfamily
-
+~\char47{}\char47{}~\char40{}c\char41{}~MP\char45{}I~\char40{}1998\char47{}9\char45{}2006\char47{}7\char41{}~and~CP~\char40{}2005\char47{}6\char45{}2016\char47{}7\char41{}\\
+\ttfamily ~\\
+\ttfamily ~module~BTree\\
+\ttfamily ~\\
+\ttfamily ~open~Cp\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}1\char41{}~Datatype~definition~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~type~BTree\char60{}\char39{}a\char62{}~\char61{}~Empty~\char124{}~Node~of~\char39{}a~\char42{}~\char40{}BTree\char60{}\char39{}a\char62{}~\char42{}~BTree\char60{}\char39{}a\char62{}\char41{}\\
+\ttfamily ~\\
+\ttfamily ~let~inBTree~x~\char61{}~either~\char40{}konst~Empty\char41{}~Node~x\\
+\ttfamily ~\\
+\ttfamily ~let~outBTree~x~\char61{}\\
+\ttfamily ~~~~~match~x~with\\
+\ttfamily ~~~~~\char124{}~Empty~\char45{}\char62{}~i1~\char40{}\char41{}\\
+\ttfamily ~~~~~\char124{}~Node~\char40{}a\char44{}\char40{}l\char44{}r\char41{}\char41{}~\char45{}\char62{}~i2~\char40{}a\char44{}\char40{}l\char44{}r\char41{}\char41{}\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}2\char41{}~Ana~\char43{}~cata~\char43{}~hylo~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~let~baseBTree~f~g~\char61{}~id~\char45{}\char124{}\char45{}~\char40{}f~\char62{}\char60{}~\char40{}g~\char62{}\char60{}~g\char41{}\char41{}\\
+\ttfamily ~\\
+\ttfamily ~let~recBTree~g~\char61{}~baseBTree~id~g\\
+\ttfamily ~\\
+\ttfamily ~let~rec~cataBTree~g~x~\char61{}~\char40{}g~\char60{}\char60{}~\char40{}recBTree~\char40{}cataBTree~g\char41{}\char41{}~\char60{}\char60{}~outBTree\char41{}~x~\\
+\ttfamily ~\\
+\ttfamily ~let~rec~anaBTree~g~x~\char61{}~\char40{}inBTree~\char60{}\char60{}~\char40{}recBTree~\char40{}anaBTree~g\char41{}\char41{}~\char60{}\char60{}~g\char41{}~x\\
+\ttfamily ~\\
+\ttfamily ~let~hyloBTree~c~a~x~\char61{}~\char40{}\char40{}cataBTree~c\char41{}~\char60{}\char60{}~\char40{}anaBTree~a\char41{}\char41{}~x\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}3\char41{}~Map~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~let~fmap~f~t~\char61{}~cataBTree~\char40{}inBTree~\char60{}\char60{}~baseBTree~f~id\char41{}~t\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}4\char41{}~Examples~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}4\char46{}1\char41{}~Inversion~\char40{}mirror\char41{}~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~let~invBTree~t~\char61{}~cataBTree~\char40{}inBTree~\char60{}\char60{}~\char40{}id~\char45{}\char124{}\char45{}~\char40{}id~\char62{}\char60{}~swap\char41{}\char41{}\char41{}~t\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}4\char46{}2\char41{}~Counting~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~let~countBTree~x~\char61{}~cataBTree~\char40{}either~\char40{}konst~0\char41{}~\char40{}succ~\char60{}\char60{}~\char40{}uncurry~\char40{}\char43{}\char41{}\char41{}~\char60{}\char60{}~p2\char41{}\char41{}~x\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}4\char46{}3\char41{}~Serialization~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~let~singl~x~\char61{}~\char91{}x\char93{}\\
+\ttfamily ~\\
+\ttfamily ~let~inord~t~\char61{}\\
+\ttfamily ~~~~~let~join\char40{}x\char44{}\char40{}l\char44{}r\char41{}\char41{}~\char61{}~l~\char64{}~\char40{}singl~x\char41{}~\char64{}~r\\
+\ttfamily ~~~~~in~\char40{}either~nil~join\char41{}~t\\
+\ttfamily ~\\
+\ttfamily ~let~inordt~t~\char61{}~cataBTree~inord~t\\
+\ttfamily ~\\
+\ttfamily ~let~preord~t~\char61{}\\
+\ttfamily ~~~~~let~f\char40{}x\char44{}\char40{}l\char44{}r\char41{}\char41{}~\char61{}~x~\char58{}\char58{}~l~\char64{}~r\\
+\ttfamily ~~~~~in~\char40{}either~nil~f\char41{}~t\\
+\ttfamily ~\\
+\ttfamily ~let~preordt~t~\char61{}~cataBTree~preord~t\\
+\ttfamily ~\\
+\ttfamily ~let~postord~t~\char61{}\\
+\ttfamily ~~~~~let~f\char40{}x\char44{}\char40{}l\char44{}r\char41{}\char41{}~\char61{}~l~\char64{}~r~\char64{}~\char40{}singl~x\char41{}\\
+\ttfamily ~~~~~in~\char40{}either~nil~f\char41{}~t\\
+\ttfamily ~\\
+\ttfamily ~let~postordt~t~\char61{}~cataBTree~postord~t\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}4\char46{}4\char41{}~Quicksort~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~let~app~a~l~\char61{}~a~\char58{}\char58{}~l\\
+\ttfamily ~\\
+\ttfamily ~let~rec~part~h~t~\char61{}~\char47{}\char47{}pivot~\char47{}~list\\
+\ttfamily ~~~~~match~t~with\\
+\ttfamily ~~~~~\char124{}~\char91{}\char93{}~\char45{}\char62{}~\char40{}\char91{}\char93{}\char44{}\char91{}\char93{}\char41{}\\
+\ttfamily ~~~~~\char124{}~x\char58{}\char58{}xs~\char45{}\char62{}~if~x~\char60{}~h~then~\char40{}\char40{}app~x\char41{}~\char62{}\char60{}~id\char41{}~\char40{}part~h~xs\char41{}\\
+\ttfamily ~~~~~~~~~~~~~~~~~~~~~~~~~else~\char40{}id~\char62{}\char60{}~\char40{}app~x\char41{}\char41{}~\char40{}part~h~xs\char41{}\\
+\ttfamily ~\\
+\ttfamily ~let~qsep~list~\char61{}\\
+\ttfamily ~~~~~match~list~with\\
+\ttfamily ~~~~~\char124{}~\char91{}\char93{}~\char45{}\char62{}~i1~\char40{}\char41{}\\
+\ttfamily ~~~~~\char124{}~h\char58{}\char58{}t~\char45{}\char62{}~let~\char40{}s\char44{}l\char41{}~\char61{}~part~h~t\\
+\ttfamily ~~~~~~~~~~~~~~~in~i2~\char40{}h\char44{}\char40{}s\char44{}l\char41{}\char41{}\\
+\ttfamily ~\\
+\ttfamily ~let~qSort~x~\char61{}~hyloBTree~inord~qsep~x\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}4\char46{}5\char41{}~Traces~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~let~rec~union~l1~l2~\char61{}~\\
+\ttfamily ~~~~~match~l2~with\\
+\ttfamily ~~~~~\char124{}~\char91{}\char93{}~\char45{}\char62{}~l1\\
+\ttfamily ~~~~~\char124{}~h\char58{}\char58{}t~\char45{}\char62{}~if~List\char46{}exists~\char40{}fun~e~\char45{}\char62{}~e~\char61{}~h\char41{}~l1~then~union~l1~t~else~union~\char40{}l1~\char64{}~\char91{}h\char93{}\char41{}~t\\
+\ttfamily ~\\
+\ttfamily ~let~tunion~\char40{}a\char44{}\char40{}l\char44{}r\char41{}\char41{}~\char61{}~union~\char40{}List\char46{}map~\char40{}app~a\char41{}~l\char41{}~\char40{}List\char46{}map~\char40{}app~a\char41{}~r\char41{}\\
+\ttfamily ~\\
+\ttfamily ~let~traces~x~\char61{}~\char40{}cataBTree~\char40{}either~\char40{}konst~\char91{}\char91{}\char93{}\char93{}\char41{}~tunion\char41{}\char41{}~x\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}4\char46{}6\char41{}~Towers~of~Hanoi~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~let~strategy~l~\char61{}\\
+\ttfamily ~~~~~match~l~with\\
+\ttfamily ~~~~~\char124{}~\char40{}d\char44{}0\char41{}~\char45{}\char62{}~i1~\char40{}\char41{}\\
+\ttfamily ~~~~~\char124{}~\char40{}d\char44{}n\char41{}~\char45{}\char62{}~i2~\char40{}\char40{}n\char45{}1\char44{}d\char41{}\char44{}\char40{}\char40{}not~d\char44{}n\char45{}1\char41{}\char44{}\char40{}not~d\char44{}~n\char45{}1\char41{}\char41{}\char41{}\\
+\ttfamily ~\\
+\ttfamily ~let~hanoi~x~\char61{}~hyloBTree~inord~strategy~x\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}5\char41{}~Depth~and~balancing~\char40{}using~mutual~recursion\char41{}~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~let~baldepth~x~\char61{}~\\
+\ttfamily ~~~~~let~h~\char40{}a\char44{}\char40{}\char40{}b1\char44{}b2\char41{}\char44{}\char40{}d1\char44{}d2\char41{}\char41{}\char41{}~\char61{}~\char40{}b1~\char38{}\char38{}~b2~\char38{}\char38{}~abs\char40{}d1\char45{}d2\char41{}\char60{}\char61{}1\char44{}~1~\char43{}~\char40{}max~d1~d2\char41{}\char41{}\\
+\ttfamily ~~~~~let~f~\char40{}\char40{}b1\char44{}d1\char41{}\char44{}\char40{}b2\char44{}d2\char41{}\char41{}~\char61{}~\char40{}\char40{}b1\char44{}b2\char41{}\char44{}\char40{}d1\char44{}d2\char41{}\char41{}\\
+\ttfamily ~~~~~let~g~g1~\char61{}~either~\char40{}konst~\char40{}true\char44{}~1\char41{}\char41{}~\char40{}h~\char60{}\char60{}~\char40{}id~\char62{}\char60{}~f\char41{}\char41{}~g1\\
+\ttfamily ~~~~~in~\char40{}cataBTree~g\char41{}~x\\
+\ttfamily ~\\
+\ttfamily ~let~balBTree~x~\char61{}~\char40{}p1~\char60{}\char60{}~baldepth\char41{}~x\\
+\ttfamily ~\\
+\ttfamily ~let~depthBTree~x~\char61{}~\char40{}p2~\char60{}\char60{}~baldepth\char41{}~x\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}6\char41{}~Going~polytipic~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~let~tnat~f~x~\char61{}\\
+\ttfamily ~~~~~let~theta~\char40{}a\char44{}b\char41{}~\char61{}~a~\char64{}~b\\
+\ttfamily ~~~~~in~~\char40{}either~\char40{}konst~\char91{}\char93{}\char41{}~\char40{}theta~\char60{}\char60{}~\char40{}f~\char62{}\char60{}~theta\char41{}\char41{}\char41{}~x\\
+\ttfamily ~\\
+\ttfamily ~let~monBTree~f~a~\char61{}~cataBTree~\char40{}tnat~f\char41{}~a\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~alternative~to~\char40{}4\char46{}3\char41{}~serialization~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~let~preordt\char39{}~t~\char61{}~monBTree~singl~t\\
+\ttfamily ~\\
+\ttfamily ~\char47{}\char47{}~\char40{}7\char41{}~Zipper~\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\char45{}\\
+\ttfamily ~\\
+\ttfamily ~type~Deriv\char60{}\char39{}a\char62{}~\char61{}~\\
+\ttfamily ~~~~~\char124{}~Dr~of~bool~\char42{}~\char40{}\char39{}a~~\char42{}~BTree\char60{}\char39{}a\char62{}\char41{}\\
+\ttfamily ~\\
+\ttfamily ~type~Zipper\char60{}\char39{}a\char62{}~\char61{}~List\char60{}Deriv\char60{}\char39{}a\char62{}\char62{}\\
+\ttfamily ~\\
+\ttfamily ~let~rec~plug~l~t~\char61{}\\
+\ttfamily ~~~~~match~l~with\\
+\ttfamily ~~~~~\char124{}~\char91{}\char93{}~\char45{}\char62{}~t\\
+\ttfamily ~~~~~\char124{}~\char40{}Dr~\char40{}false\char44{}\char40{}a\char44{}l\char41{}\char41{}\char58{}\char58{}z\char41{}~~\char45{}\char62{}~Node~\char40{}a\char44{}\char40{}plug~z~t\char44{}l\char41{}\char41{}\\
+\ttfamily ~~~~~\char124{}~\char40{}Dr~\char40{}true\char44{}\char40{}a\char44{}~r\char41{}\char41{}\char58{}\char58{}z\char41{}~~\char45{}\char62{}~Node~\char40{}a\char44{}\char40{}r\char44{}plug~z~t\char41{}\char41{}~
 \end{tabbing}
 
 %----------------- Fim do anexo com soluções dos alunos ------------------------%
