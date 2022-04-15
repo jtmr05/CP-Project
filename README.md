@@ -1,6 +1,6 @@
 # CP-Project
 
-Program Calculation project made in the context of the subject of Program Calculation on Minho University.
+Program Calculus project made in the context of the subject of Program Calculus @ Minho University.
 
 Made by:
 
